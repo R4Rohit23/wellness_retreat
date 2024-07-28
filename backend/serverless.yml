@@ -1,0 +1,32 @@
+service: wellness-backend
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: prod
+  region: ap-south-1
+  memorySize: 128
+
+plugins:
+  # - serverless-plugin-common-excludes
+  # - serverless-plugin-include-dependencies
+  - serverless-dotenv-plugin
+
+package:
+  patterns:
+    - '!node_modules/.cache/prisma/**'
+
+functions:
+  index:
+    handler: index.handler
+    events: 
+      - http: 
+          path: /
+          method: ANY
+          cors: true
+      - http: 
+          path: /{proxy+}
+          method: ANY
+          cors: true
